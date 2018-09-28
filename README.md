@@ -12,7 +12,7 @@
 3: mkdir build && cd build  
 4: cmake ..  
 5: make  
-6: executable location is /build/csf  
+6: sudo csf/csf  
 
 ----
 ## what in future?
