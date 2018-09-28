@@ -7,7 +7,7 @@
 
 ----
 ## usage
-1: git clone github.com/ekknod/csf --recursive  
+1: git clone https://github.com/ekknod/csf --recursive  
 2: cd csf  
 3: mkdir build && cd build  
 4: cmake ..  
