@@ -34,7 +34,7 @@ static void demo_aimassist(void);
  */
 static u_mouse   mouse( RX_INPUT_MODE_SEND );
 
-static cs_convar sensitivity;
+static cs_convar sensitivity, mp_teammates_are_enemies;
 static cs_player target;
 
 int main(void)
@@ -48,6 +48,7 @@ int main(void)
         return -1;
     }
     sensitivity = cvar::find("sensitivity");
+    mp_teammates_are_enemies = cvar::find("mp_teammates_are_enemies");
     while ( engine::IsRunning() ) {
         if (engine::IsInGame()) {
             demo_aimassist();
@@ -106,6 +107,8 @@ static bool best_target(vec3 vangle, cs_player self, cs_player *target)
     for (i = 1; i < 33; i++) {
         e = entity::GetClientEntity(i);
         if (!e.IsValid())
+            continue;
+        if ( !mp_teammates_are_enemies.GetInt() && self.GetTeam() == e.GetTeam())
             continue;
         c = angle_fov(vangle, target_angle(self, e));
         if (c < b) {
