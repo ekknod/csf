@@ -4,8 +4,6 @@
 
 extern u_process cs_p;
 extern uintptr_t cs_nv_dwEntityList;
-extern uint32_t  cs_nv_m_dwState;
-extern uint32_t  cs_nv_m_dwButton;
 extern uint32_t  cs_nv_m_iHealth;
 extern uint32_t  cs_nv_m_vecViewOffset;
 extern uint32_t  cs_nv_m_lifeState;
@@ -27,9 +25,9 @@ int cs_player::GetHealth(void)
     return cs_p.read<int>(self + cs_nv_m_iHealth);
 }
 
-int cs_player::GetState(void)
+int cs_player::GetLifeState(void)
 {
-    return cs_p.read<int>(self + cs_nv_m_dwState);
+    return cs_p.read<int>(self + cs_nv_m_lifeState);
 }
 
 int cs_player::GetShotsFired(void)
@@ -91,6 +89,6 @@ bool cs_player::IsValid(void)
     int health;
 
     health = GetHealth();
-    return self && GetState() == 0 && health > 0 && health < 1337;
+    return self && GetLifeState() == 0 && health > 0 && health < 1337;
 }
 

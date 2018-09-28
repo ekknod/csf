@@ -8,7 +8,7 @@ class cs_player {
 public:
     int       GetTeam(void);
     int       GetHealth(void);
-    int       GetState(void);
+    int       GetLifeState(void);
     int       GetShotsFired(void);
     bool      IsDormant(void);
     uintptr_t GetWeapon(void);
