@@ -11,8 +11,8 @@
 2: cd csf  
 3: mkdir build && cd build  
 4: cmake ..  
-5: make
-6: executable location is /build/csf
+5: make  
+6: executable location is /build/csf  
 
 ----
 ## what in future?
