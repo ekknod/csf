@@ -311,7 +311,7 @@ double vec_distance(vec3 p0, vec3 p1)
 
 static void aim_faceit(vec3 vangle, vec3 angle)
 {
-    vec3 px, move;
+    vec3 px;
 
     px = vec_sub(vangle, angle);
     vec_clamp(&px);
