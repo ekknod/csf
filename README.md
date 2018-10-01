@@ -25,6 +25,10 @@
 * external convars
 
 ----
+## video
+[![IMAGE ALT TEXT](https://i.ytimg.com/vi/P655rd45cQ8/maxresdefault.jpg)](https://www.youtube.com/watch?v=P655rd45cQ8a "linux csgo csf tutorial")
+
+----
 ## licence
 * free use for non commercial projects
 * credit me if you like.
