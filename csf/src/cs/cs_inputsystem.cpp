@@ -8,11 +8,11 @@ extern uint32_t         cs_nv_m_dwButton;
 extern uint32_t         cs_nv_m_dwAnalog;
 extern uint32_t         cs_nv_m_dwAnalogDelta;
 
-bool inputsystem::IsButtonDown(int button_code)
+bool inputsystem::IsButtonDown(CS_BUTTONCODE button)
 {
     uint32_t v;
-    v = cs_p.read<uint32_t>(cs_vt_inputsystem.address() + (((button_code >> 5 ) * 4) + cs_nv_m_dwButton));
-    return (v >> (button_code & 31)) & 1;
+    v = cs_p.read<uint32_t>(cs_vt_inputsystem.address() + (((button >> 5 ) * 4) + cs_nv_m_dwButton));
+    return (v >> (button & 31)) & 1;
 }
 
 vec2i inputsystem::GetMouseAnalog(void)

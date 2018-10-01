@@ -7,12 +7,15 @@ extern uintptr_t cs_nv_dwEntityList;
 extern uint32_t  cs_nv_m_iHealth;
 extern uint32_t  cs_nv_m_vecViewOffset;
 extern uint32_t  cs_nv_m_lifeState;
+extern uint32_t  cs_nv_m_nTickBase;
 extern uint32_t  cs_nv_m_vecVelocity;
 extern uint32_t  cs_nv_m_vecPunch;
+extern uint32_t  cs_nv_m_iFOV;
 extern uint32_t  cs_nv_m_iTeamNum;
 extern uint32_t  cs_nv_m_vecOrigin;
 extern uint32_t  cs_nv_m_hActiveWeapon;
 extern uint32_t  cs_nv_m_iShotsFired;
+extern uint32_t  cs_nv_m_bIsScoped;
 extern uint32_t  cs_nv_m_dwBoneMatrix;
 
 int cs_player::GetTeam(void)
@@ -30,9 +33,19 @@ int cs_player::GetLifeState(void)
     return cs_p.read<int>(self + cs_nv_m_lifeState);
 }
 
+int cs_player::GetTickCount(void)
+{
+    return cs_p.read<int>(self + cs_nv_m_nTickBase);
+}
+
 int cs_player::GetShotsFired(void)
 {
     return cs_p.read<int>(self + cs_nv_m_iShotsFired);
+}
+
+bool cs_player::IsScoped(void)
+{
+    return cs_p.read<bool>(self + cs_nv_m_bIsScoped);
 }
 
 bool cs_player::IsDormant(void)
@@ -43,7 +56,7 @@ bool cs_player::IsDormant(void)
     return cs_p.read<bool>(a + cs_p.read<unsigned char>((*(cs_virtual_table*)&a).function(9) + 0x8));
 }
 
-uintptr_t cs_player::GetWeapon()
+uintptr_t cs_player::GetWeapon(void)
 {
     uint32_t v;
 
@@ -51,16 +64,16 @@ uintptr_t cs_player::GetWeapon()
     return cs_p.read<uintptr_t>(cs_nv_dwEntityList + ((v & 0xFFF) - 1) * 0x10);
 }
 
-vec3 cs_player::GetOrigin()
+vec3 cs_player::GetOrigin(void)
 {
     return cs_p.read<vec3>(self + cs_nv_m_vecOrigin);
 }
 
-vec3 cs_player::GetVecView()
+vec3 cs_player::GetVecView(void)
 {
     return cs_p.read<vec3>(self + cs_nv_m_vecViewOffset);
 }
-vec3 cs_player::GetEyePos()
+vec3 cs_player::GetEyePos(void)
 {
     vec3 v, o, r;
     v = this->GetVecView();
@@ -69,14 +82,19 @@ vec3 cs_player::GetEyePos()
     return r;
 }
 
-vec3 cs_player::GetVecVelocity()
+vec3 cs_player::GetVecVelocity(void)
 {
     return cs_p.read<vec3>(self + cs_nv_m_vecViewOffset);
 }
 
-vec3 cs_player::GetVecPunch()
+vec3 cs_player::GetVecPunch(void)
 {
     return cs_p.read<vec3>(self + cs_nv_m_vecPunch);
+}
+
+int cs_player::GetFov(void)
+{
+    return cs_p.read<int>(self + cs_nv_m_iFOV);
 }
 
 void cs_player::GetBoneMatrix(int index, matrix3x4_t *out)

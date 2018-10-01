@@ -9,7 +9,9 @@ public:
     int       GetTeam(void);
     int       GetHealth(void);
     int       GetLifeState(void);
+    int       GetTickCount(void);
     int       GetShotsFired(void);
+    bool      IsScoped(void);
     bool      IsDormant(void);
     uintptr_t GetWeapon(void);
     vec3      GetOrigin(void);
@@ -17,6 +19,7 @@ public:
     vec3      GetEyePos(void);
     vec3      GetVecVelocity(void);
     vec3      GetVecPunch(void);
+    int       GetFov(void);
     void      GetBoneMatrix(int index, matrix3x4_t *out);
     bool      IsValid(void);
 } ;

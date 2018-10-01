@@ -20,12 +20,15 @@ uint32_t         cs_nv_m_dwAnalog;
 uint32_t         cs_nv_m_iHealth;
 uint32_t         cs_nv_m_vecViewOffset;
 uint32_t         cs_nv_m_lifeState;
+uint32_t         cs_nv_m_nTickBase;
 uint32_t         cs_nv_m_vecVelocity;
 uint32_t         cs_nv_m_vecPunch;
+uint32_t         cs_nv_m_iFOV;
 uint32_t         cs_nv_m_iTeamNum;
 uint32_t         cs_nv_m_vecOrigin;
 uint32_t         cs_nv_m_hActiveWeapon;
 uint32_t         cs_nv_m_iShotsFired;
+uint32_t         cs_nv_m_bIsScoped;
 uint32_t         cs_nv_m_dwBoneMatrix;
 
 static void initialize_vt(void);
@@ -60,12 +63,15 @@ bool cs_initialize(void)
         "    DT_BasePlayer:                   m_iHealth:           0x%x\n"
         "    DT_BasePlayer:                   m_vecViewOffset:     0x%x\n"
         "    DT_BasePlayer:                   m_lifeState:         0x%x\n"
+        "    DT_BasePlayer:                   m_nTickBase:         0x%x\n"
         "    DT_BasePlayer:                   m_vecVelocity:       0x%x\n"
         "    DT_BasePlayer:                   m_vecPunch:          0x%x\n"
+        "    DT_BasePlayer:                   m_iFOV:              0x%x\n"
         "    DT_BaseEntity:                   m_iTeamNum:          0x%x\n"
         "    DT_BaseEntity:                   m_vecOrigin:         0x%x\n"
         "    DT_CSPlayer:                     m_hActiveWeapon:     0x%x\n"
         "    DT_CSPlayer:                     m_iShotsFired:       0x%x\n"
+        "    DT_CSPlayer:                     m_bIsScoped:         0x%x\n"
         "    DT_BaseAnimating:                m_dwBoneMatrix:      0x%x\n"
         "[*]convar demo:\n"
         "    sensitivity:                     %ff\n"
@@ -92,12 +98,15 @@ bool cs_initialize(void)
         cs_nv_m_iHealth,
         cs_nv_m_vecViewOffset,
         cs_nv_m_lifeState,
+        cs_nv_m_nTickBase,
         cs_nv_m_vecVelocity,
         cs_nv_m_vecPunch,
+        cs_nv_m_iFOV,
         cs_nv_m_iTeamNum,
         cs_nv_m_vecOrigin,
         cs_nv_m_hActiveWeapon,
         cs_nv_m_iShotsFired,
+        cs_nv_m_bIsScoped,
         cs_nv_m_dwBoneMatrix,
         cvar::find("sensitivity").GetFloat(),
         cvar::find("volume").GetFloat(),
@@ -190,14 +199,17 @@ static void initialize_nv(void)
         cs_nv_m_iHealth       = t.offset("m_iHealth");
         cs_nv_m_vecViewOffset = t.offset("m_vecViewOffset[0]");
         cs_nv_m_lifeState     = t.offset("m_lifeState");
+        cs_nv_m_nTickBase     = t.offset("m_nTickBase");
         cs_nv_m_vecVelocity   = t.offset("m_vecVelocity[0]");
         cs_nv_m_vecPunch      = t.offset("m_aimPunchAngle");
+        cs_nv_m_iFOV          = t.offset("m_iFOV");
     t = netvars::find("DT_BaseEntity");
         cs_nv_m_iTeamNum      = t.offset("m_iTeamNum");
         cs_nv_m_vecOrigin     = t.offset("m_vecOrigin");
     t = netvars::find("DT_CSPlayer");
         cs_nv_m_hActiveWeapon = t.offset("m_hActiveWeapon");
         cs_nv_m_iShotsFired   = t.offset("m_iShotsFired");
+        cs_nv_m_bIsScoped     = t.offset("m_bIsScoped");
     t = netvars::find("DT_BaseAnimating");
         cs_nv_m_dwBoneMatrix  = t.offset("m_nForceBone") + 0x2C;
 }

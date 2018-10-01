@@ -3,7 +3,7 @@ project(csf)
 set(OUT csf)
 
 add_executable ( ${OUT}
-    src/main.cpp src/cs/cs_convar.cpp src/cs/cs_inputsystem.cpp src/cs/cs_netvars.cpp src/cs/cs_engine.cpp src/cs/cs_interfaces.cpp src/cs/cs_player.cpp )
+    src/aimassist.cpp src/u_config.cpp src/cs/cs_convar.cpp src/cs/cs_inputsystem.cpp src/cs/cs_netvars.cpp src/cs/cs_engine.cpp src/cs/cs_interfaces.cpp src/cs/cs_player.cpp )
 
 
 set_target_properties(${OUT} PROPERTIES LINKER_LANGUAGE CXX)
