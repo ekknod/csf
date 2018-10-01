@@ -17,7 +17,6 @@
 ----
 ## what in future?
 * windows support
-* maybe better demo, current demo in main contains dangerous code
 
 ----
 ## features
