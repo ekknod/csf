@@ -407,12 +407,12 @@ static void mouse_move(int x, int y)
 
 static void mouse1_down(void)
 {
-    rx_send_input_button(_mouse, RX_BUTTON_MOUSE1, 1);
+    rx_send_input_button(_mouse, RX_BTN_LEFT, 1);
 }
 
 static void mouse1_up(void)
 {
-    rx_send_input_button(_mouse, RX_BUTTON_MOUSE1, 0);
+    rx_send_input_button(_mouse, RX_BTN_LEFT, 0);
 }
 
 static void aim_at_target(vec3 vangle, vec3 angle)
