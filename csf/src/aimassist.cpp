@@ -415,16 +415,19 @@ static void mouse1_up(void)
     rx_send_input_button(_mouse, RX_BUTTON_MOUSE1, 0);
 }
 
-extern "C" { int abs(int); }
 static void aim_at_target(vec3 vangle, vec3 angle)
 {
     float x, y, sx, sy;
 
 
     y = vangle.x - angle.x, x = vangle.y - angle.y;
-    if (x > 89.0f)   x = 89.0f;   else if (x < -89.0f)  x = -89.0f;
-    if (y > 180.0f)  y -= 360.0f; else if (y < -180.0f) y += 360.0f;
-    if ( abs(x) / 180.0f > _cfg.aimbot.fov || abs(y) / 89.0f > _cfg.aimbot.fov) return;
+    if (y > 89.0f)   y = 89.0f;   else if (y < -89.0f)  y = -89.0f;
+    if (x > 180.0f)  x -= 360.0f; else if (x < -180.0f) x += 360.0f;
+
+    if (abs(x) / 180.0f >= _cfg.aimbot.fov)
+        return;
+    if (abs(y) / 89.0f >= _cfg.aimbot.fov)
+        return;
     x = ((x / _flsensitivity) / 0.022f);
     y = ((y / _flsensitivity) / -0.022f);
     if (_cfg.aimbot.smooth) {
