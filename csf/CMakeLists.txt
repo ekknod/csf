@@ -15,5 +15,5 @@ set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -Wno-format-truncation -Wno-
 if (NOT CMAKE_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE Release)
 endif()
-target_link_libraries(${OUT} ${CMAKE_SOURCE_DIR}/build/rx/librx.a "-Wall -DNDEBUG -pthread -s -O2")
+target_link_libraries(${OUT} rx "-Wall -DNDEBUG -pthread -s -O2")
 
