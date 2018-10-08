@@ -3,6 +3,7 @@
 
 #include "../../rx/rx.h"
 #include <inttypes.h>
+#include <string.h>
 
 class u_process {
     const char *_name;
@@ -12,7 +13,17 @@ public:
     ~u_process(void) { detach(); }
     inline bool attach(void)
     {
-        return (_handle = rx_open_process(rx_find_process_id(_name), RX_ALL_ACCESS)) != 0;
+        rx_handle        s = rx_create_snapshot(RX_SNAP_TYPE_PROCESS, 0);
+        RX_PROCESS_ENTRY e;
+
+        while (rx_next_process(s, &e)) {
+            if (strcmp(e.name, _name) == 0) {
+                _handle = rx_open_process(e.pid, RX_ALL_ACCESS);
+                break;
+            }
+        }
+        rx_close_handle(s);
+        return _handle != 0;
     }
     inline void detach(void)
     {
