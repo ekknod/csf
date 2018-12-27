@@ -9,6 +9,7 @@ cs_virtual_table cs_vt_engine;
 cs_virtual_table cs_vt_cvar;
 cs_virtual_table cs_vt_inputsystem;
 uintptr_t        cs_nv_dwEntityList;
+uintptr_t        cs_nv_dwLocalPlayer;
 uintptr_t        cs_nv_dwClientState;
 uint32_t         cs_nv_m_dwGetLocalPlayer;
 uint32_t         cs_nv_m_dwViewAngles;
@@ -122,7 +123,7 @@ int engine::IsRunning(void)
 
 int engine::GetLocalPlayer(void)
 {
-    return cs_p.read<int>(cs_nv_dwClientState + cs_nv_m_dwGetLocalPlayer);
+    return cs_p.read<int>(cs_nv_dwClientState + cs_nv_m_dwGetLocalPlayer) + 1;
 }
 
 vec3 engine::GetViewAngles(void)
@@ -150,6 +151,11 @@ cs_player entity::GetClientEntity(int index)
     return cs_p.read<cs_player>(cs_nv_dwEntityList + index * 0x10);
 }
 
+cs_player entity::GetLocalPlayer()
+{
+    return cs_p.read<cs_player>(cs_nv_dwLocalPlayer);
+}
+
 static void initialize_vt(void)
 {
     cs_interface_reg t;
@@ -167,7 +173,7 @@ static void initialize_vt(void)
 
 static uintptr_t offset_entitylist(void)
 {
-    return cs_vt_entity.address() - cs_p.read<uint32_t>(cs_vt_entity.function(4) + 3) + 0x28;
+    return cs_vt_entity.address() - cs_p.read<uint32_t>(cs_vt_entity.function(4) + 3) + 0x08;
 }
 
 static uintptr_t offset_clientstate(void)
@@ -185,7 +191,7 @@ static void initialize_nv(void)
 {
     cs_netvar_table t;
 
-    cs_nv_dwEntityList        = offset_entitylist();
+    cs_nv_dwEntityList        = offset_entitylist(); cs_nv_dwLocalPlayer = cs_nv_dwEntityList - 0x2fff8;
     cs_nv_dwClientState       = offset_clientstate();
     cs_nv_m_dwGetLocalPlayer  = cs_p.read<uint32_t>(cs_vt_engine.function(12) + 0x11);
     cs_nv_m_dwViewAngles      = cs_p.read<uint32_t>(cs_vt_engine.function(18) + 0x1A);

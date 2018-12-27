@@ -115,6 +115,7 @@ public:
 static config      _cfg("config.cfg");
 static rx_handle   _mouse;
 static cs_player   _target;
+static int         _target_bone;
 static cs_convar   _sensitivity;
 static cs_convar   _mp_teammates_are_enemies;
 static float       _flsensitivity;
@@ -303,6 +304,7 @@ static int crosshair_id(vec3 vangle, cs_player self)
         id = entity.GetTeam();
         if (!_mp_teammates_are_enemies.GetInt() && self.GetTeam() == id)
             continue;
+
         id -= 2;
         for (j = 6; j-- ;) {
             entity.GetBoneMatrix(_hitbox_list[id][j].bone, &matrix);
@@ -357,12 +359,12 @@ static float get_fov(vec3 vangle, vec3 angle)
     return RAD2DEG(acos(vec_dot(a0, a1) / vec_length(a0)));
 }
 
-static vec3 get_target_angle(cs_player self, cs_player target)
+static vec3 get_target_angle(cs_player self, cs_player target, int bone_id)
 {
     matrix3x4_t m;
     vec3        c, p;
 
-    target.GetBoneMatrix(8, &m);
+    target.GetBoneMatrix(bone_id, &m);
     c = self.GetEyePos();
     m[0][3] -= c.x, m[1][3] -= c.y, m[2][3] -= c.z;
     c.x = m[0][3], c.y = m[1][3], c.z = m[2][3];
@@ -382,18 +384,25 @@ static bool get_target(cs_player self, vec3 vangle)
     int       i;
     cs_player entity;
     float     fov;
+    int       j;
 
     best_fov = 9999.0f;
     for (i = 1; i < engine::GetMaxClients(); i++) {
+
         entity = entity::GetClientEntity(i);
         if (!entity.IsValid())
             continue;
+
         if (!_mp_teammates_are_enemies.GetInt() && self.GetTeam() == entity.GetTeam())
             continue;
-        fov = get_fov(vangle, get_target_angle(self, entity));
-        if (fov < best_fov) {
-            best_fov = fov;
-            _target  = entity;
+
+        for (j = 7; j--;) {
+            fov = get_fov(vangle, get_target_angle(self, entity, _hitbox_list[0][j].bone));
+            if (fov < best_fov) {
+                best_fov = fov;
+                _target  = entity;
+                _target_bone = _hitbox_list[0][j].bone;
+            }
         }
     }
     return best_fov != 9999.0f;
@@ -458,10 +467,13 @@ static void aim(void)
     bool      a;
 
 
-    self           = entity::GetClientEntity(engine::GetLocalPlayer());
+    self           = entity::GetLocalPlayer();
     vangle         = engine::GetViewAngles();
     _current_tick  = self.GetTickCount();
     _flsensitivity = _sensitivity.GetFloat();
+
+
+
     if (self.IsScoped()) {
         _flsensitivity = (self.GetFov() / 90.0f) * _flsensitivity;
     }
@@ -469,7 +481,7 @@ static void aim(void)
         a = false;
         if (crosshair_id(vangle, self)) {
             mouse1_down();
-            usleep(10);
+            usleep(10000);
             mouse1_up();
         }
     } else {
@@ -479,7 +491,7 @@ static void aim(void)
         if (a == true && inputsystem::IsButtonDown(_cfg.aimbot.button)) {
             if (!_target.IsValid() && !get_target(self, vangle))
                 return;
-            aim_at_target(vangle, get_target_angle(self, _target));
+            aim_at_target(vangle, get_target_angle(self, _target, _target_bone));
         } else {
             _target = {};
         }
@@ -553,6 +565,7 @@ int main(int argc, char **argv)
     while (engine::IsRunning()) {
         if (engine::IsInGame()) {
             aim();
+            usleep(1000);
         }
     }
     rx_close_handle(_mouse);
