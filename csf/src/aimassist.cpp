@@ -14,6 +14,7 @@ public:
         inputsystem::CS_BUTTONCODE button;
         float                      fov;
         float                      smooth;
+        int                        bone;
     } aimbot ;
 
     struct {
@@ -31,6 +32,7 @@ public:
             aimbot.button     = inputsystem::MOUSE_1;
             aimbot.fov        = 2.0f;
             aimbot.smooth     = 2.0f;
+            aimbot.bone       = 0;
             triggerbot.enable = true;
             triggerbot.button = inputsystem::MOUSE_5;
         } else {
@@ -40,6 +42,7 @@ public:
             aimbot.button     = (inputsystem::CS_BUTTONCODE)t.GetInt("button");
             aimbot.fov        = t.GetFloat("fov");
             aimbot.smooth     = t.GetFloat("smooth");
+            aimbot.bone       = t.GetInt("bone");
             t = c.table("[triggerbot]");
             triggerbot.enable = t.GetInt("enable");
             triggerbot.button = (inputsystem::CS_BUTTONCODE)t.GetInt("button");
@@ -72,7 +75,8 @@ public:
             "    enable: %d\n"
             "    button: %d\n"
             "    fov:    %f\n"
-            "    smooth: %f\n}\n"
+            "    smooth: %f\n"
+            "    bone:   %d\n}\n"
             "[triggerbot]\n{\n"
             "    enable: %d\n"
             "    button: %d\n}\n",
@@ -80,6 +84,7 @@ public:
             aimbot.button,
             aimbot.fov,
             aimbot.smooth,
+            aimbot.bone,
             triggerbot.enable,
             triggerbot.button
             ) ;
@@ -96,7 +101,8 @@ public:
             "    enable: %d\n"
             "    button: %d\n"
             "    fov:    %f\n"
-            "    smooth: %f\n}\n"
+            "    smooth: %f\n"
+            "    bone:   %d\n}\n"
             "[triggerbot]\n{\n"
             "    enable: %d\n"
             "    button: %d\n}\n",
@@ -104,6 +110,7 @@ public:
             aimbot.button,
             aimbot.fov,
             aimbot.smooth,
+            aimbot.bone,
             triggerbot.enable,
             triggerbot.button
             );
@@ -396,13 +403,22 @@ static bool get_target(cs_player self, vec3 vangle)
         if (!_mp_teammates_are_enemies.GetInt() && self.GetTeam() == entity.GetTeam())
             continue;
 
-        for (j = 7; j--;) {
-            fov = get_fov(vangle, get_target_angle(self, entity, _hitbox_list[0][j].bone));
+        if (_cfg.aimbot.bone == 0) {
+            for (j = 7; j--;) {
+                fov = get_fov(vangle, get_target_angle(self, entity, _hitbox_list[0][j].bone));
+                if (fov < best_fov) {
+                    best_fov = fov;
+                    _target  = entity;
+                    _target_bone = _hitbox_list[0][j].bone;
+                }
+            }
+        } else {
+            fov = get_fov(vangle, get_target_angle(self, entity, _cfg.aimbot.bone));
             if (fov < best_fov) {
                 best_fov = fov;
                 _target  = entity;
-                _target_bone = _hitbox_list[0][j].bone;
-            }
+                _target_bone = _cfg.aimbot.bone;
+             }
         }
     }
     return best_fov != 9999.0f;
