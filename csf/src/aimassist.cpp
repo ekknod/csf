@@ -32,7 +32,7 @@ public:
             aimbot.button     = inputsystem::MOUSE_1;
             aimbot.fov        = 2.0f;
             aimbot.smooth     = 2.0f;
-            aimbot.bone       = 0;
+            aimbot.bone       = 8;
             triggerbot.enable = true;
             triggerbot.button = inputsystem::MOUSE_5;
         } else {
