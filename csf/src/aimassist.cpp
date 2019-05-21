@@ -483,12 +483,10 @@ static void aim(void)
     bool      a;
 
 
-    self           = entity::GetLocalPlayer();
+    self           = entity::GetClientEntity(engine::GetLocalPlayer());
     vangle         = engine::GetViewAngles();
     _current_tick  = self.GetTickCount();
     _flsensitivity = _sensitivity.GetFloat();
-
-
 
     if (self.IsScoped()) {
         _flsensitivity = (self.GetFov() / 90.0f) * _flsensitivity;

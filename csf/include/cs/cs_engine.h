@@ -23,7 +23,6 @@ bool      IsInGame(void);
 
 namespace entity {
 cs_player GetClientEntity(int index);
-cs_player GetLocalPlayer();
 }
 
 #endif // CS_ENGINE_H
