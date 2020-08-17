@@ -154,7 +154,7 @@ static void initialize_vt(void)
 {
     cs_interface_reg t;
 
-    t = interfaces::find("client_panorama_client.so");
+    t = interfaces::find("client_client.so");
         cs_vt_client      = t.find("VClient");
         cs_vt_entity      = t.find("VClientEntityList");
     t = interfaces::find("engine_client.so");
