@@ -4,11 +4,7 @@
 ## usage
 * git clone https://github.com/ekknod/csf --recursive
 * cd csf
-* mkdir build && cd build
-* cmake ..
-* make
-* ./csf/csf --write
-* sudo ./csf/csf
+* ./run
 ----
 ## what in future?
 * windows support
