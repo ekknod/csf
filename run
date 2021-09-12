@@ -1,0 +1,7 @@
+mkdir build
+cd build
+cmake ..
+make -j8
+cd ..
+./build/csf/csf --write
+sudo ./build/csf/csf
